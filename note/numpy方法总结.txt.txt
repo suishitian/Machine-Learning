@@ -4,3 +4,12 @@
 4. matrix.I  ----  求矩阵matrix的逆矩阵(matrix的类型为matrix)
 5. numpy.eye(4)  ----  创建4*4的单位矩阵(对角线为1其余为0)
 6. 矩阵乘法,就是简单的将两个matrix对象用*连接即可(同理四则运算)
+7. numpy.tile(a,x)  ----  功能是重复某个数组，将a数组重复x次成为一个新的数组
+       eg: tile(input, (4,1))  ----  tile的第二个参数可以是一个元组，在这里表示将input整理为4*1的数据格式，其中的1即为input
+	       if input -> [1,1]
+		   then tile(input, (4,1)) -> [[1,1],[1,1],[1,1],[1,1]]
+	   eg: tile(input, 4)  ----  只是单纯的将input，按照自己的数据结构中，进行值得重复
+	       if input -> [1,1]
+		   then tile(input, 4) -> [1,1,1,1,1,1,1,1]
+8. 对数据结构(数组，矩阵等)进行**(平方)运算的时候，是对每一个元素原址进行平方。
+9. python operator模块的简介: https://baijiahao.baidu.com/s?id=1613289614650107001&wfr=spider&for=pc
