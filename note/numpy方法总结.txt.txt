@@ -1,0 +1,6 @@
+1. numpy函数库中有两种相似的数据类型,array和matrix,但是使用起来不用,相同计算可能导致不同结果
+2. numpy.random.rand(3,3)  ----  生成3*3的array随机数矩阵
+3. numpy.mat(array)  ----  将array转换为matrix类型矩阵
+4. matrix.I  ----  求矩阵matrix的逆矩阵(matrix的类型为matrix)
+5. numpy.eye(4)  ----  创建4*4的单位矩阵(对角线为1其余为0)
+6. 矩阵乘法,就是简单的将两个matrix对象用*连接即可(同理四则运算)
