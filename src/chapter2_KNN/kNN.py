@@ -11,6 +11,22 @@ class KNN:
         self.dataSet = dataSet
         self.labels = labels
 
+    def loadData(self,filename):
+        fr = open(filename)
+        arrayLines = fr.readlines()
+        numberOfLine = len(arrayLines)
+        returnMat = zeros((numberOfLine,3))
+        classLabelVector = []
+        index = 0
+        for line in arrayLines:
+            line = line.strip()
+            listFromline = line.split('\t')
+            returnMat[index,:] = listFromline[0:3]
+            classLabelVector.append(int(listFromline[-1]))
+            index += 1
+        self.dataSet = returnMat
+        self.labels = classLabelVector
+
     def process(self,input):
         dataSetSize = self.dataSet.shape[0]
         ##计算输入与所有其他坐标点的距离
@@ -25,8 +41,6 @@ class KNN:
             # 统计前k个距离最近的样本的对应类别
             classCount[voteIlabel] = classCount.get(voteIlabel,0) + 1
         sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
-        ##在最后返回的是0,0的原因是，在上一步sorted的时候使用的原数据结构是dict的items()，因为items()是元组组成的
-        ##所以在最后返回的时候，也是在一元组为基础的数据结构上进行二维取值
         return sortedClassCount[0][0]
 
 group, labels = createDataSet()
