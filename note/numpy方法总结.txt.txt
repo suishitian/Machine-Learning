@@ -13,3 +13,10 @@
 		   then tile(input, 4) -> [1,1,1,1,1,1,1,1]
 8. 对数据结构(数组，矩阵等)进行**(平方)运算的时候，是对每一个元素原址进行平方。
 9. python operator模块的简介: https://baijiahao.baidu.com/s?id=1613289614650107001&wfr=spider&for=pc
+10. returnMat[index,:] = listFromline[0:3]  ----  returnMat是一个列为3的数据结构，此行命令为，将listFromLine0,1,2的数据直接分别放入returnMat的0,1,2
+11. 一个列表的[-1]表示获取列表的最后一项
+12. dataSet.min(0)  ----  dataSet为一个二维矩阵，min(0)求每一列的最小值返回一个(1*列数)的数据结构,值为每一列的最小值
+	dataSet.min()  ----  无参，所有中的最小值  
+	dataSet.min(0)  ----  axis=0; 每列的最小值  
+	dataSet.min(1)  ----  axis=1；每行的最小值
+13. 归一化公式：newValue = (oldValue-min)/(max-min) 其中min,max为当前列的最大最小
