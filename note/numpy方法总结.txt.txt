@@ -27,3 +27,5 @@
 16. sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)  ----  其中classCount为一个map
 		sortedClassCount[0][0]是最终想要的值，这个是因为classCount.items()返回的是二维元组，所以导致sortedClassCount是一个二维元组列表
 		key=operator.itemgetter(1)只的是(key,value)中的value，所以实际上就是对map中的value进行排序
+17. github如果git push的时候报time out的错误。
+		使用git config --local -e  将配置中的url的地址改为https的(这个地址可以在github的repo中找到)
