@@ -126,10 +126,11 @@ def classifyPersonByInput():
     print("You will probably like this person: "+result_list[result-1])
 
 
-group, labels = file2matrix("./data/datingTestSet2.txt")
-knn = KNN(3,group,labels)
-knn.autoNorm()
-generatePlot(knn.dataSet,knn.labels)
-dataSet, labels = file2matrix("./data/datingTestSet2.txt")
-testData(dataSet,labels)
-classifyPersonByInput()
+if __name__=="__main__":
+    group, labels = file2matrix("./data/datingTestSet2.txt")
+    knn = KNN(3,group,labels)
+    knn.autoNorm()
+    generatePlot(knn.dataSet,knn.labels)
+    dataSet, labels = file2matrix("./data/datingTestSet2.txt")
+    testData(dataSet,labels)
+    classifyPersonByInput()

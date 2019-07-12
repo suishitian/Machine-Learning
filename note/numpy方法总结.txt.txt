@@ -20,3 +20,10 @@
 	dataSet.min(0)  ----  axis=0; 每列的最小值  
 	dataSet.min(1)  ----  axis=1；每行的最小值
 13. 归一化公式：newValue = (oldValue-min)/(max-min) 其中min,max为当前列的最大最小
+14. 香农熵公式：H=-求和(p(xi)log2(p(xi)))，熵越高说明混合的数据越多
+15. 向量中删除某index的值： 
+	reducedFeatVec = vec[:index]
+    reducedFeatVec.extend(vec[index+1:])  ----  用extend拼接index前后的元素，绕过要删除的Index
+16. sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)  ----  其中classCount为一个map
+		sortedClassCount[0][0]是最终想要的值，这个是因为classCount.items()返回的是二维元组，所以导致sortedClassCount是一个二维元组列表
+		key=operator.itemgetter(1)只的是(key,value)中的value，所以实际上就是对map中的value进行排序
