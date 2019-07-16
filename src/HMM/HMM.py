@@ -55,8 +55,8 @@ def ForwardAlgo(A, B, Pi, O):
     r = np.zeros((1, N))
     alpha_1 = np.multiply(Pi[0, :], B[:, O[0, 0] - 1])
 
-    alpha[:, 0] = np.array(alpha_1).reshape(1,
-                                            N)  # alpha_1是一维数组，在使用np.multiply的时候需要升级到二维数组。#错误是IndexError: too many indices for array
+    # alpha_1是一维数组，在使用np.multiply的时候需要升级到二维数组。#错误是IndexError: too many indices for array
+    alpha[:, 0] = np.array(alpha_1).reshape(1,N)
 
     for h in range(1, H):
         for i in range(N):
@@ -213,13 +213,17 @@ if __name__=="__main__":
                   [.7,.3]])
     Pi = np.array([[.2,.4,.4]])
     O = np.array([[1,2,1]])
-
+    print("前向后向概率计算")
     alpha, P = ForwardAlgo(A, B, Pi, O)
-    #print(alpha)
-    #print(P)
+    print("前向概率矩阵:")
+    print(alpha)
+    print("前向概率计算的观测概率值:")
+    print(P)
     alpha_b, P_b = BackwardAlgo(A, B, Pi, O)
-    #print(alpha_b)
-    #print(P_b)
+    print("后向概率矩阵:")
+    print(alpha_b)
+    print("后向概率计算的观测概率值:")
+    print(P_b)
     A_s = np.array([[.5, .5, .5],
                   [.5, .5, .5],
                   [.5, .5, .5]])
@@ -228,6 +232,8 @@ if __name__=="__main__":
                   [.5, .5]])
     Pi_s = np.array([[.5, .5, .5]])
     O = np.array([[1, 2, 1]])
+    print()
+    print("viterbi算法:")
     viterbi(A, B, Pi, O)
     A = np.array([[.5, .2, .3],
                   [.3, .5, .2],
@@ -237,7 +243,12 @@ if __name__=="__main__":
                   [.7, .3]])
     Pi = np.array([[.2, .4, .4]])
     O = np.array([[1, 2, 1]])
+    print()
+    print("BaumWelch算法:")
     A_new,B_new,C_new = BaumWelchAlgo_n(A, B, Pi, O,5)
+    print("A:")
     print(A_new)
+    print("C:")
     print(B_new)
+    print("Pi:")
     print(C_new)
