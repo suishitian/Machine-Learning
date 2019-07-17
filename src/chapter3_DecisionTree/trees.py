@@ -1,6 +1,7 @@
 from math import log
 import operator
 import copy
+import matplotlib.pyplot as plt
 
 def createDataSet():
     dataSet = [[1,1,'yes'],
@@ -12,7 +13,6 @@ def createDataSet():
     return dataSet,labels
 
 class Tree:
-
     def __init__(self,dataSet,labels):
         self.dataSet = dataSet
         self.labels = labels
@@ -127,6 +127,45 @@ class Tree:
         self.myTree = self.createTree(dataSet,labels)
         self.builded = True
 
+    @staticmethod
+    def getNumLeafs(myTree):
+        numLeafs = 0
+        firstStr = list(myTree.keys())[0]
+        secondDict = myTree[firstStr]
+        for key in secondDict.keys():
+            if type(secondDict[key]).__name__ == 'dict':
+                numLeafs += Tree.getNumLeafs(secondDict[key])
+            else:
+                numLeafs += 1
+        return numLeafs
+
+    def getThisNumLeafs(self):
+        if not self.builded :
+            print("there is no tree builded in this class")
+            return -1
+        return Tree.getNumLeafs(self.myTree)
+
+    @staticmethod
+    def getTreeDepth(myTree):
+        maxDepth = 0
+        firstStr = list(myTree.keys())[0]
+        secondDict = myTree[firstStr]
+        for key in secondDict.keys():
+            if type(secondDict[key]).__name__=='dict':
+                thisDepth = 1 + Tree.getTreeDepth(secondDict[key])
+            else:
+                thisDepth = 1
+            if thisDepth > maxDepth:
+                maxDepth = thisDepth
+        return maxDepth
+
+    def getThisTreeDepth(self):
+        if not self.builded :
+            print("there is no tree builded in this class")
+            return -1
+        return Tree.getTreeDepth(self.myTree)
+
+
 
 if __name__=="__main__":
     dataSet,labels = createDataSet()
@@ -141,3 +180,5 @@ if __name__=="__main__":
     print(res)
     tree.BuildTree()
     print(tree.myTree)
+    print(tree.getThisNumLeafs())
+    print(tree.getThisTreeDepth())
