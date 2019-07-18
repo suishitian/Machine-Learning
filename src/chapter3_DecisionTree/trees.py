@@ -2,6 +2,7 @@ from math import log
 import operator
 import copy
 import matplotlib.pyplot as plt
+import pickle
 
 def createDataSet():
     dataSet = [[1,1,'yes'],
@@ -11,6 +12,12 @@ def createDataSet():
                [0,1,'no']]
     labels = ['no surfacing','flippers']
     return dataSet,labels
+
+def loadLensesData(filename):
+    fr = open(filename,'r',encoding='utf-8')
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    lensesLables = ['age','prescript','astigmatic','tearRate']
+    return lenses,lensesLables
 
 class Tree:
     def __init__(self,dataSet=None,labels=None):
@@ -210,7 +217,7 @@ class Tree:
     def createPlot(self):
         if not self.builded:
             print("there is not tree builded in this class")
-            return False
+            return
         decisionNode = dict(boxstyle="sawtooth", fc="0.8")
         leafNode = dict(boxstyle="round4", fc="0.8")
         arrow_args = dict(arrowstyle="<-")
@@ -227,24 +234,41 @@ class Tree:
                       decisionNode,leafNode,arrow_args,totalW,totalD)
         plt.show()
 
+    def storeTree(self,filename):
+        #将对象序列化为持久信息
+        fw = open(filename,"wb")
+        pickle.dump(self.myTree,fw)
+        fw.close()
+
+    def restoreTree(self,filename):
+        #将对象的持久信息，转换为对象
+        fr = open(filename,'rb')
+        return pickle.load(fr)
+
+    def classify(self,inputTree, featLabels,testVec):
+        firstStr = list(inputTree.keys())[0]
+        secondDict = inputTree[firstStr]
+        featIndex = featLabels.index(firstStr)
+        classLabel = None
+        for key in secondDict.keys():
+            if testVec[featIndex] == key:
+                if type(secondDict[key]).__name__=='dict':
+                    classLabel = self.classify(secondDict[key],featLabels,testVec)
+                else:
+                    classLabel = secondDict[key]
+        return classLabel
+
+    def process(self,featLabels,testVec):
+        if not self.builded:
+            print("there is not tree builded in this class")
+            return None
+        return self.classify(self.myTree,featLabels,testVec)
 
 if __name__=="__main__":
-    dataSet,labels = createDataSet()
-    #dataSet[0][-1] = 'hahah'
-    print(dataSet)
-    shannonEnt = Tree.calShannonEnt(dataSet)
-    print(shannonEnt)
-    tree = Tree(dataSet,labels)
-    mat = tree.splitDataSet(tree.dataSet,2,'yes')
-    print(mat)
-    res = tree.chooseBestFeatureToSplit(tree.dataSet)
-    print(res)
+    data,labels = loadLensesData("./data/lenses.txt")
+    print(data[0])
+    print(len(data))
+    tree = Tree(data,labels)
     tree.BuildTree()
     print(tree.myTree)
-    print(tree.getThisNumLeafs())
-    print(tree.getThisTreeDepth())
-    #tree.createPlot()
-    tree2 = Tree()
-    tree2.myTree = {'no surfacing':{0:'no',1:{'flippers':{0:'no',1:'yes'}},3:'maybe'}}
-    tree2.builded = True
-    tree2.createPlot()
+    tree.createPlot()

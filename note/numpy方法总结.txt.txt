@@ -29,3 +29,8 @@
 		key=operator.itemgetter(1)只的是(key,value)中的value，所以实际上就是对map中的value进行排序
 17. github如果git push的时候报time out的错误。
 		使用git config --local -e  将配置中的url的地址改为https的(这个地址可以在github的repo中找到)
+18. pickle序列化，与反序列化的时候，要用二进制的wb,rb
+		fw = open(filename,"wb")
+        pickle.dump(self.myTree,fw)
+		fr = open(filename,'rb')
+        pickle.load(fr)
