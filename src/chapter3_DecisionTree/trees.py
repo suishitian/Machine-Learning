@@ -13,11 +13,17 @@ def createDataSet():
     return dataSet,labels
 
 class Tree:
-    def __init__(self,dataSet,labels):
+    def __init__(self,dataSet=None,labels=None):
+        if dataSet==None:
+            self.dataSet = list()
+        if labels==None:
+            self.labels = list()
         self.dataSet = dataSet
         self.labels = labels
         self.myTree = {}
         self.builded = False
+        self.numLeafs = -1
+        self.depth = -1
 
     @staticmethod
     def calShannonEnt(dataSet):
@@ -165,6 +171,61 @@ class Tree:
             return -1
         return Tree.getTreeDepth(self.myTree)
 
+    @staticmethod
+    def plotMidText(cntrPt, parentPt, txtString, ax1):
+        xMid = (parentPt[0] - cntrPt[0]) / 2.0 + cntrPt[0]
+        yMid = (parentPt[1] - cntrPt[1]) / 2.0 + cntrPt[1]
+        ax1.text(xMid, yMid, txtString)
+
+    @staticmethod
+    def plotTree(myTree, parentPt, nodeTxt,ax1, decisionNode,leafNode,arrow_args,totalW,totalD):
+        numLeafs = Tree.getNumLeafs(myTree)
+        depth = Tree.getTreeDepth(myTree)
+        firstStr = list(myTree.keys())[0]
+        cntrPt = (Tree.plotTree.xoff + (1.0+float(numLeafs))/2.0/totalW,Tree.plotTree.yoff)
+        Tree.plotMidText(cntrPt,parentPt,nodeTxt,ax1)
+        Tree.plotNode(firstStr,cntrPt,parentPt,decisionNode,arrow_args, ax1)
+        secondDict = myTree[firstStr]
+        Tree.plotTree.yoff = Tree.plotTree.yoff - 1.0/totalD
+        for key in secondDict.keys():
+            if type(secondDict[key]).__name__=="dict":
+                Tree.plotTree(secondDict[key],cntrPt,str(key),ax1,decisionNode,leafNode,arrow_args,totalW,totalD)
+            else:
+                Tree.plotTree.xoff = Tree.plotTree.xoff + 1.0/totalW
+                Tree.plotNode(secondDict[key], (Tree.plotTree.xoff,Tree.plotTree.yoff),cntrPt,leafNode,arrow_args,ax1)
+                Tree.plotMidText((Tree.plotTree.xoff, Tree.plotTree.yoff),cntrPt,str(key),ax1)
+        Tree.plotTree.yoff = Tree.plotTree.yoff + 1.0/totalD
+
+    @staticmethod
+    def plotNode(nodeTxt, centerPt, parentPt, nodeType,arrow_args, ax1):
+        ax1.annotate(nodeTxt,
+                     xy=parentPt,
+                     xycoords='axes fraction',
+                     xytext=centerPt,
+                     textcoords="axes fraction",
+                     va="center",
+                     ha="center",
+                     bbox=nodeType,
+                     arrowprops=arrow_args)
+    def createPlot(self):
+        if not self.builded:
+            print("there is not tree builded in this class")
+            return False
+        decisionNode = dict(boxstyle="sawtooth", fc="0.8")
+        leafNode = dict(boxstyle="round4", fc="0.8")
+        arrow_args = dict(arrowstyle="<-")
+        current_tree = copy.deepcopy(self.myTree)
+        fig = plt.figure(1,facecolor='white')
+        fig.clf()
+        axprops = dict(xticks=[],yticks=[])
+        ax1 = plt.subplot(111,frameon=False,**axprops)
+        totalW = float(self.getThisNumLeafs())
+        totalD = float(self.getThisTreeDepth())
+        Tree.plotTree.xoff = -0.5/float(totalW)
+        Tree.plotTree.yoff = 1.0
+        Tree.plotTree(current_tree,(0.5,1),'',ax1,
+                      decisionNode,leafNode,arrow_args,totalW,totalD)
+        plt.show()
 
 
 if __name__=="__main__":
@@ -182,3 +243,8 @@ if __name__=="__main__":
     print(tree.myTree)
     print(tree.getThisNumLeafs())
     print(tree.getThisTreeDepth())
+    #tree.createPlot()
+    tree2 = Tree()
+    tree2.myTree = {'no surfacing':{0:'no',1:{'flippers':{0:'no',1:'yes'}},3:'maybe'}}
+    tree2.builded = True
+    tree2.createPlot()
