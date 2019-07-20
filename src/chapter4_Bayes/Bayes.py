@@ -1,0 +1,3 @@
+
+def createDataSet():
+    postingList = []
