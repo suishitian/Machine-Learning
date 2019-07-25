@@ -34,3 +34,8 @@
         pickle.dump(self.myTree,fw)
 		fr = open(filename,'rb')
         pickle.load(fr)
+19. python中的set可以用|符号作为操作符，直接对两个set取并集
+20. [0]*len(vocabList)生成一个长度为len(vocabList)的全0list，非常实用
+21. vocablist = list()
+	...
+	vocabList.index(word)    通过word的值，反向查找在list中的索引，如果有重复，则只返回第一个索引值，在foreach语句中可以经常大量使用
