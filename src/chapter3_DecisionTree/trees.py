@@ -214,6 +214,7 @@ class Tree:
                      ha="center",
                      bbox=nodeType,
                      arrowprops=arrow_args)
+
     def createPlot(self):
         if not self.builded:
             print("there is not tree builded in this class")
